@@ -86,7 +86,7 @@ class Configuration implements ConfigurationInterface
                                     ->prototype('array')
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->enumNode('type')->isRequired()->values(['yml', 'xml'])->end()
+                                            ->enumNode('type')->isRequired()->values(['yml', 'xml', 'graphqls'])->end()
                                             ->scalarNode('dir')->defaultNull()->end()
                                         ->end()
                                     ->end()
