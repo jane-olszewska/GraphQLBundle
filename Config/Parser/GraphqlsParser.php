@@ -199,12 +199,21 @@ class GraphqlsParser implements ParserInterface
                     return $config;
                 },
                 NodeKind::INPUT_VALUE_DEFINITION => function(InputValueDefinitionNode $def) {
-                    return [
+                    $config = [
                         self::NAME_TO_KEY => $def->name,
                         'type' => $def->type,
-                        'defaultValue' => $def->defaultValue,
                         'description' => $def->description
                     ];
+
+                    // @TODO: this will break any argument that has a default value of null
+                    // yet this is still a massive improvment as clients will now be able to pass null as an arg
+                    // and have that be distinguishable from not provided args. The case of having default null
+                    // is rare.
+                    if ($def->defaultValue !== null) {
+                        $config['defaultValue'] = $def->defaultValue;
+                    }
+
+                    return $config;
                 },
                 NodeKind::INTERFACE_TYPE_DEFINITION => function(InterfaceTypeDefinitionNode $def) {
                     return [
