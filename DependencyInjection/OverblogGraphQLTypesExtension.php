@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OverblogGraphQLTypesExtension extends Extension
 {
-    private static $configTypes = ['yml', 'xml'];
+    private static $configTypes = ['yml', 'xml', 'graphqls'];
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -111,8 +111,14 @@ class OverblogGraphQLTypesExtension extends Extension
         $types = null === $type ? self::$configTypes : [$type];
 
         foreach ($types as $type) {
+            $pattern = "*.types.$type";
+
+            if ($type === 'graphqls') {
+                $pattern = "*.graphqls";
+            }
+
             try {
-                $finder->files()->in($path)->name('*.types.'.$type);
+                $finder->files()->in($path)->name($pattern);
             } catch (\InvalidArgumentException $e) {
                 continue;
             }
